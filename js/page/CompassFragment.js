@@ -1,10 +1,21 @@
-/**
- * Created by wangdi on 4/11/16.
- */
 'use strict';
 
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Platform, RefreshControl, ScrollView, ToastAndroid, Image, Dimensions, PixelRatio, Alert, AlertIOS} from 'react-native';
+import {
+    Text,
+    View,
+    StyleSheet,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    ToastAndroid,
+    Image,
+    Dimensions,
+    PixelRatio,
+    Alert,
+    AlertIOS
+} from 'react-native';
+import Toast from '@remobile/react-native-toast';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import computeTime from '../util/computeTime';
@@ -24,19 +35,21 @@ const imgBtnImages = [
     require('../image/hot.png')
 ];
 
-export default class CompassFragment extends Component{
-    constructor(props){
+export default class CompassFragment extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             refreshing: true,
             loadedData: false,
             dataBlob: [],
-            btnName: ['沸点','贡献榜','本周最热']
+            btnName: ['沸点', '贡献榜', '本周最热']
         }
+        this._fetchData = this._fetchData.bind(this);
+        this._onDismissRefresh = this._onDismissRefresh.bind(this);
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <View style={styles.container}>
                 <SearchBar onPress={this._searchButtonCallback.bind(this)}/>
                 <ScrollView
@@ -44,7 +57,7 @@ export default class CompassFragment extends Component{
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this._onRefresh.bind(this)}
-                            colors={['red','#ffd500','#0080ff','#99e600']}
+                            colors={['red', '#ffd500', '#0080ff', '#99e600']}
                             tintColor={theme.themeColor}
                             title="Loading..."
                             titleColor={theme.themeColor}
@@ -63,16 +76,17 @@ export default class CompassFragment extends Component{
                     </Swiper>
                     <View style={styles.imageBtnLine}>
                         {this.state.btnName.map((item, index) => {
-                            return(
-                            <ImageButton
-                                key={index}
-                                image={imgBtnImages[index]}
-                                imgSize={px2dp(35)}
-                                text={item}
-                                color="#000"
-                                btnStyle={styles.imgBtn}
-                                onPress={this._imageButtonCallback.bind(this, index)}/>
-                            )})
+                            return (
+                                <ImageButton
+                                    key={index}
+                                    image={imgBtnImages[index]}
+                                    imgSize={px2dp(35)}
+                                    text={item}
+                                    color="#000"
+                                    btnStyle={styles.imgBtn}
+                                    onPress={this._imageButtonCallback.bind(this, index)}/>
+                            )
+                        })
                         }
                     </View>
                     { this._renderListView() }
@@ -86,31 +100,35 @@ export default class CompassFragment extends Component{
         this._fetchData();
     }
 
-    _searchButtonCallback(){
+    _searchButtonCallback() {
 
     }
 
-    _imageButtonCallback(position){
+    _onDismissRefresh(){
+        this.setState({refreshing: false});
+    }
+
+    _imageButtonCallback(position) {
         this._alert();
     }
 
-    _renderListView(){
-        if(!this.state.refreshing || this.state.loadedData) {
+    _renderListView() {
+        if (!this.state.refreshing || this.state.loadedData) {
             return (
                 <ListView isRenderHeader={true} contents={this.state.dataBlob}/>
             );
         }
     }
 
-    _fetchData(){
-        fetch('http://gold.xitu.io/api/v1/hot/57fa525a0e3dd90057c1e04d/android')
+    _fetchData() {
+        fetch('http://gold.xitu.io/api/v1/hot/57fa525a0e3dd90057c1e04d/android', {timeout: 10000})
             .then((response) => response.json())
             .then((responseData) => {
                 let data = responseData.data;
                 let entry = data.entry;
                 var dataBlob = [];
 
-                for(let i in entry){
+                for (let i in entry) {
                     let itemInfo = {
                         title: entry[i].title,
                         collectionCount: entry[i].collectionCount,
@@ -129,26 +147,36 @@ export default class CompassFragment extends Component{
                     loadedData: true,
                     refreshing: false
                 });
-            }).done();
+            })
+            .catch((err) => {
+                this._onDismissRefresh();
+                ToastAndroid.show('网络错误',30000);
+            });
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this._fetchData();
     }
 
-    _alert(){
-        if(Platform.OS === 'android') {
+    _alert() {
+        if (Platform.OS === 'android') {
             Alert.alert(
                 'Message',
                 "This function currently isn't available",
-                [{text: 'OK', onPress: () => {}}]
+                [{
+                    text: 'OK', onPress: () => {
+                    }
+                }]
             );
-        }else if(Platform.OS === 'ios'){
+        } else if (Platform.OS === 'ios') {
             AlertIOS.alert(
                 'Message',
                 "This function currently isn't available",
-                [{text: 'OK', onPress: () => {}}]
+                [{
+                    text: 'OK', onPress: () => {
+                    }
+                }]
             );
         }
     }
@@ -159,22 +187,20 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: theme.pageBackgroundColor
     },
-    slide: {
-
-    },
+    slide: {},
     image: {
         height: px2dp(130),
         width: Dimensions.get('window').width
     },
-    imageBtnLine:{
+    imageBtnLine: {
         flexDirection: 'row',
         backgroundColor: '#fff',
         alignItems: 'center',
-        borderBottomWidth: 1/PixelRatio.get(),
+        borderBottomWidth: 1 / PixelRatio.get(),
         borderBottomColor: '#c4c4c4'
     },
     imgBtn: {
         height: px2dp(80),
-        width: Dimensions.get('window').width/3,
+        width: Dimensions.get('window').width / 3,
     }
 });

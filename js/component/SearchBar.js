@@ -1,9 +1,6 @@
-/**
- * Created by wangdi on 7/11/16.
- */
 import React, {Component, PropTypes} from 'react';
 import {Text, View, StyleSheet, Platform, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
-import theme from '../config/theme';
+import * as theme from '../config/theme';
 import px2dp from '../util/px2dp';
 import Icon from 'react-native-vector-icons/Ionicons';
 

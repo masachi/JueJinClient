@@ -1,6 +1,3 @@
-/**
- * Created by wangdi on 16/11/16.
- */
 import React, {Component, PropTypes} from 'react';
 import {StyleSheet, View, Text, Platform} from 'react-native';
 import ImageButton from '../component/ImageButtonWithText';

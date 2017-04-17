@@ -4,14 +4,15 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component, PropTypes} from 'react';
 import {AppRegistry} from 'react-native';
 import Navigation from './js/config/entry';
+
 
 export default class JueJinClient extends Component {
     render() {
         return (
-            <Navigation/>
+            <Navigation />
         );
     }
 }

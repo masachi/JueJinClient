@@ -1,6 +1,3 @@
-/**
- * Created by wangdi on 14/11/16.
- */
 import React, {PropTypes} from 'react';
 import ReactNative, {Text, View, StyleSheet, Platform, TouchableOpacity, ListView, Image, PixelRatio, BackAndroid} from 'react-native';
 import px2dp from '../util/px2dp';

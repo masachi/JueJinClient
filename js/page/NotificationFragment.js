@@ -32,10 +32,9 @@ export default class NotificationFragment extends Component{
                                 });
                             }}
                             activeOpacity={theme.btnActiveOpacity}>
-                            <Text style={{color: theme.themeColor}}>登录 / Sign-in</Text>
+                            <Text style={{color: theme.themeColor}}>登录</Text>
                         </TouchableOpacity>
                     </View>
-                    <View tabLabel="动态" style={styles.content}><Text>state function is not available</Text></View>
                 </ScrollableTabView>
             </View>
         );

@@ -1,6 +1,3 @@
-/**
- * Created by wangdi on 18/11/16.
- */
 'use strict';
 
 import React, {Component, PropTypes} from 'react';

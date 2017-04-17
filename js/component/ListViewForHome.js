@@ -1,13 +1,10 @@
-/**
- * Created by wangdi on 9/11/16.
- */
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
-import ReactNative, {Text, View, StyleSheet, Platform, TouchableOpacity, TouchableNativeFeedback, ListView, Image, PixelRatio} from 'react-native';
+import {Text, View, StyleSheet, Platform, TouchableOpacity, TouchableNativeFeedback, ListView, Image, PixelRatio} from 'react-native';
 import px2dp from '../util/px2dp';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import theme from '../config/theme';
+import * as theme from '../config/theme';
 import MainPage from '../page/MainPage';
 import TextButton from '../component/TextButton';
 
@@ -83,6 +80,7 @@ export default class ListViewForHome extends Component{
         return(
             <ListView
                 style={styles.listView}
+                enableEmptySections={true}
                 dataSource={this.state.dataSource}
                 renderRow={this._renderItem.bind(this)}
             />

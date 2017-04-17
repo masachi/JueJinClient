@@ -1,6 +1,3 @@
-/**
- * Created by wangdi on 5/11/16.
- */
 'use strict';
 
 import {Dimensions} from 'react-native';

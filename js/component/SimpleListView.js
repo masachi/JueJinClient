@@ -1,22 +1,19 @@
-/**
- * Created by wangdi on 9/11/16.
- */
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
-import ReactNative, {Text, View, StyleSheet, Platform, PixelRatio, ListView, TouchableOpacity, TouchableNativeFeedback, Image} from 'react-native';
+import {Text, View, StyleSheet, Platform, PixelRatio, ListView, TouchableOpacity, TouchableNativeFeedback, Image} from 'react-native';
 import px2dp from '../util/px2dp';
-import theme from '../config/theme';
+import * as theme from '../config/theme';
 import MainPage from '../page/MainPage';
 
 export default class SimpleListView extends Component{
     static propTypes = {
         isRenderHeader: PropTypes.bool
-    }
+    };
 
     static defaultProps = {
         isRenderHeader: false
-    }
+    };
 
     constructor(props){
         super(props);
@@ -91,6 +88,7 @@ export default class SimpleListView extends Component{
         return(
             <ListView
                 style={styles.listView}
+                enableEmptySections={true}
                 dataSource={this.state.dataSource}
                 renderRow={this._renderItem.bind(this)}
                 renderHeader={this._renderHeader.bind(this)}

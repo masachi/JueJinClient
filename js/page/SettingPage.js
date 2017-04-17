@@ -22,48 +22,12 @@ export default class SettingPage extends PageComponent{
                 <NavigationBar title="设置" backOnPress={this._handleBack.bind(this)}/>
                 <ScrollView>
                     <View style={styles.list}>
-                        <Item text="邮箱" subText="未设置"/>
-                        <Item text="手机号" subText="未设置"/>
-                        <Item text="修改账户密码"/>
+                        <Item text="推送消息" isHasSwitcher={true} name={'push_notification'} switcherValue={true}/>
                     </View>
-                    {/*--------------------------------------------------------------------------*/}
                     <View style={styles.list}>
-                        <Item text="绑定新浪微博" subText="未设置" isHasSwitcher={true}/>
-                        <Item text="绑定微信" subText="未设置" isHasSwitcher={true}/>
-                        <Item text="绑定Github" subText="React-Native" isHasSwitcher={true} switcherValue={true}/>
-                    </View>
-                    {/*--------------------------------------------------------------------------*/}
-                    <View style={styles.list}>
-                        <Item text="清除缓存"/>
-                        <Item text="向我推送好文章" isHasSwitcher={true}/>
-                        <Item text="移动网络下首页不显示图片" isHasSwitcher={true}/>
-                        <Item text="自动检查粘贴板快速分享" isHasSwitcher={true} switcherValue={true}/>
-                    </View>
-                    {/*--------------------------------------------------------------------------*/}
-                    <View style={styles.list}>
-                        <Item text="用户反馈" />
                         <Item text="关于" />
                     </View>
                     {/*--------------------------------------------------------------------------*/}
-                    <View style={styles.list}>
-                        { Platform.OS === 'android' ?
-                            <TouchableNativeFeedback>
-                                <View style={[styles.listItem, {justifyContent: 'center'}]}>
-                                    <Text style={{color: 'red', fontSize: px2dp(15)}}>退出登录</Text>
-                                </View>
-                            </TouchableNativeFeedback>
-                            :
-                            <TouchableOpacity activeOpacity={theme.btnActiveOpacity}>
-                                <View style={[styles.listItem, {justifyContent: 'center'}]}>
-                                    <Text style={{color: 'red', fontSize: px2dp(15)}}>退出登录</Text>
-                                </View>
-                            </TouchableOpacity>
-                        }
-                    </View>
-                    {/*--------------------------------------------------------------------------*/}
-                    <View style={{flexDirection: 'row' , justifyContent: 'center', marginBottom: 30, marginTop: 20}}>
-                        <Text style={{color: '#ccc'}}>掘金 3.7.3 - gold.xitu.io</Text>
-                    </View>
                 </ScrollView>
             </View>
         );

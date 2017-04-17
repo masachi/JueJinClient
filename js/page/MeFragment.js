@@ -1,6 +1,3 @@
-/**
- * Created by wangdi on 4/11/16.
- */
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
@@ -12,6 +9,7 @@ import Avatar from '../component/Avatar';
 import TextButton from '../component/TextButton';
 import SettingPage from './SettingPage';
 import IndividualPage from './IndividualPage';
+import SignInPage from './SignInAndSignup/SignInPage';
 
 export default class MeFragment extends Component{
     constructor(props){
@@ -58,6 +56,19 @@ export default class MeFragment extends Component{
        }
     }
 
+    _onSignOut(){
+        storage.save({
+            key: 'loginState',
+            rawData: {
+                username: '',
+                isLoggedIn: false,
+            }
+        });
+        this.props.navigator.push({
+           component: SignInPage,
+        });
+    }
+
     render(){
         return(
             <View style={styles.container}>
@@ -70,7 +81,6 @@ export default class MeFragment extends Component{
                             <Avatar image={require('../image/logo_og.png')} size={px2dp(55)} textSize={px2dp(20)}/>
                             <View style={{marginLeft: px2dp(12)}}>
                                 <Text style={{color: theme.text.color, fontSize: px2dp(20)}}>React_Native</Text>
-                                <TextButton text="添加职位 @添加公司" color="#949494" fontSize={px2dp(13)} onPress={this._onPressCallback.bind(this, 1)}/>
                             </View>
                             <View style={{flex: 1, flexDirection:'row', justifyContent: 'flex-end'}}>
                                 <Icon name="ios-arrow-forward" color="#ccc" size={px2dp(30)}/>
@@ -83,7 +93,6 @@ export default class MeFragment extends Component{
                             <Avatar image={require('../image/logo_og.png')} size={px2dp(55)} textSize={px2dp(20)}/>
                             <View style={{marginLeft: px2dp(12)}}>
                                 <Text style={{color: theme.text.color, fontSize: px2dp(20)}}>WangdiCoder</Text>
-                                <TextButton text="添加职位 @添加公司" color="#949494" fontSize={px2dp(13)} onPress={this._onPressCallback.bind(this, 1)}/>
                             </View>
                             <View style={{flex: 1, flexDirection:'row', justifyContent: 'flex-end'}}>
                                 <Icon name="ios-arrow-forward" color="#ccc" size={px2dp(30)}/>
@@ -92,13 +101,22 @@ export default class MeFragment extends Component{
                     </TouchableOpacity>
                 }
                 <View style={styles.list}>
-                    <Item icon="md-heart" text="我的收藏" subText="15篇" iconColor="#32cd32" onPress={this._onPressCallback.bind(this, 2)}/>
-                    <Item icon="md-eye" text="阅读过的文章" subText="15篇" onPress={this._onPressCallback.bind(this, 3)}/>
-                    <Item icon="md-pricetag" text="标签管理" subText="9个" onPress={this._onPressCallback.bind(this, 4)}/>
+                    <Item icon="md-settings" text="设置" onPress={this._onPressCallback.bind(this, 6)}/>
                 </View>
                 <View style={styles.list}>
-                    <Item icon="md-ribbon" text="掘金排名" iconColor="#ff4500" onPress={this._onPressCallback.bind(this, 5)}/>
-                    <Item icon="md-settings" text="设置" onPress={this._onPressCallback.bind(this, 6)}/>
+                    { Platform.OS === 'android' ?
+                        <TouchableNativeFeedback onPress={this._onSignOut.bind(this)}>
+                            <View style={[styles.listItem, {justifyContent: 'center'}]} >
+                                <Text style={{color: 'red', fontSize: px2dp(15)}}>退出登录</Text>
+                            </View>
+                        </TouchableNativeFeedback>
+                        :
+                        <TouchableOpacity activeOpacity={theme.btnActiveOpacity} onPress={this._onSignOut.bind(this)}>
+                            <View style={[styles.listItem, {justifyContent: 'center'}]} >
+                                <Text style={{color: 'red', fontSize: px2dp(15)}}>退出登录</Text>
+                            </View>
+                        </TouchableOpacity>
+                    }
                 </View>
             </View>
         );
@@ -128,11 +146,11 @@ class Item extends Component{
         text: PropTypes.string.isRequired,
         subText: PropTypes.string,
         onPress: PropTypes.func
-    }
+    };
 
     static defaultProps = {
         iconColor: 'gray'
-    }
+    };
 
     render(){
         const {icon, iconColor, text, subText, onPress} = this.props;

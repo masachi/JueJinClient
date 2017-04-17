@@ -1,15 +1,13 @@
-/**
- * Created by wangdi on 6/11/16.
- */
 'use strict';
 
 import React, {Component} from 'react';
-import {Text, StyleSheet, View, ScrollView, RefreshControl} from 'react-native';
+import {Text, StyleSheet, View, ScrollView, RefreshControl, ToastAndroid} from 'react-native';
 import HotPanel from '../../component/HotPanel';
 import ListViewForHomeTab from '../../component/ListViewForHome';
 import ListViewForOtherTab from '../../component/SimpleListView';
 import computeTime from '../../util/computeTime';
-import theme from '../../config/theme';
+import * as theme from '../../config/theme';
+import Toast from '@remobile/react-native-toast';
 
 export default class HomeTab extends Component {
     constructor(props) {
@@ -19,6 +17,8 @@ export default class HomeTab extends Component {
             loadedData: false,
             dataBlob: []
         };
+        this._fetchData = this._fetchData.bind(this);
+        this._onDismissRefresh = this._onDismissRefresh.bind(this);
     }
 
     componentDidMount() {
@@ -29,11 +29,12 @@ export default class HomeTab extends Component {
         return (
             <ScrollView
                 style={{}}
+                enableEmptySections={true}
                 refreshControl={
                     <RefreshControl
                         refreshing={this.state.refreshing}
                         onRefresh={this._onRefresh.bind(this)}
-                        colors={['red','#ffd500','#0080ff','#99e600']}
+                        colors={['red', '#ffd500', '#0080ff', '#99e600']}
                         tintColor={theme.themeColor}
                         title="Loading..."
                         titleColor={theme.themeColor}
@@ -46,20 +47,13 @@ export default class HomeTab extends Component {
 
     _renderContents() {
         var {tabTag} = this.props;
-        if (tabTag === '首页')
-            tabTag = '热门推荐';
-        else
-            tabTag += '热门';
+        tabTag += '课程';
 
         if (!this.state.refreshing || this.state.loadedData) {
             return (
                 <View>
                     <HotPanel title={tabTag} contents={this.state.dataBlob}/>
-                    { tabTag === '热门推荐' ?
-                        <ListViewForHomeTab contents={this.state.dataBlob}/>
-                        :
-                        <ListViewForOtherTab contents={this.state.dataBlob}/>
-                    }
+                    <ListViewForOtherTab contents={this.state.dataBlob}/>
                 </View>
             );
         }
@@ -68,6 +62,11 @@ export default class HomeTab extends Component {
     _onRefresh() {
         this.setState({refreshing: true});
         this._fetchData();
+    }
+
+    _onDismissRefresh() {
+        Toast.showLongCenter.bind(null, '网络错误');
+        this.setState({refreshing: false});
     }
 
     _getCurrentTime() {
@@ -83,7 +82,7 @@ export default class HomeTab extends Component {
 
     _fetchData() {
         var url = 'http://gold.xitu.io/api/v1/timeline/57fa525a0e3dd90057c1e04d/' + this._getCurrentTime();
-        fetch(url)
+        fetch(url, {timeout: 10000})
             .then((response) => response.json())
             .then((responseData) => {
                 let data = responseData.data;
@@ -106,13 +105,17 @@ export default class HomeTab extends Component {
                     dataBlob.push(info);
                 }
 
-                if(dataBlob.length !== 0) {
+                if (dataBlob.length !== 0) {
                     this.setState({
                         dataBlob: dataBlob,
                         loadedData: true,
                         refreshing: false
                     });
                 }
-            }).done();
+            })
+            .catch((err) => {
+                this._onDismissRefresh();
+                ToastAndroid.show('网络错误',30000);
+            });
     }
 }

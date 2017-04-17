@@ -1,10 +1,7 @@
-/**
- * Created by wangdi on 18/11/16.
- */
 'use strict';
 
 export default function computeTime(time) { // time format 2016-11-11T18:56:33.904Z
-    var datePart = time.substring(0, 10).replace(/\-/g, "/");;
+    var datePart = time.substring(0, 10).replace(/\-/g, "/");
     var timePart = time.substring(11, 19);
     //console.log(datePart + ' ' + timePart);
     var oldTime = (new Date(datePart + ' ' + timePart)).getTime();

@@ -1,11 +1,8 @@
-/**
- * Created by wangdi on 11/11/16.
- */
 import React, {Component, PropTypes} from 'react';
 import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, Platform, TouchableNativeFeedback, PixelRatio} from 'react-native';
 import px2dp from '../util/px2dp';
 import Icon from 'react-native-vector-icons/Octicons';
-import theme from '../config/theme';
+import * as theme from '../config/theme';
 import MainPage from '../page/MainPage';
 
 export default class HotPanel extends Component{

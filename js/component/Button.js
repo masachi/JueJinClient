@@ -1,12 +1,9 @@
-/**
- * Created by wangdi on 4/11/16.
- */
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
 import {Text, View, StyleSheet, Platform, TouchableHighlight, TouchableNativeFeedback} from 'react-native';
 import px2dp from '../util/px2dp';
-import theme from '../config/theme';
+import * as theme from '../config/theme';
 
 export default class Button extends Component{
     static propTypes = {
